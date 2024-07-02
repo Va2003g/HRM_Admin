@@ -1,19 +1,17 @@
 import React from "react";
 import { signInWithPopup } from "firebase/auth";
 
-
 import { hero, logo, Google } from "../../assets";
 import { auth, provider } from "../../Backend";
-
 
 export function Login() {
   function handleLogin() {
     signInWithPopup(auth, provider)
       .then((result) => {
-        const {displayName,email,photoURL} = result.user;
-        console.log(displayName)
-        console.log(email)
-        console.log(photoURL)
+        const { displayName, email, photoURL } = result.user;
+        console.log(displayName);
+        console.log(email);
+        console.log(photoURL);
         console.log("result after signing in", result.user);
       })
       .catch((error) => {
