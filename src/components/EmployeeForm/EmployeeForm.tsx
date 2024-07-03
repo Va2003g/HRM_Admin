@@ -4,7 +4,7 @@ import colors from "../../colors";
 export const EmployeeForm = () => {
   return (
     <div
-      className="w-full m-5 p-6 rounded-lg shadow-md overflow-scroll h-[760px] hide-scrollbar"
+      className="w-full m-5 p-6 rounded-lg shadow-md h-[720px] hide-scrollbar"
       style={{ backgroundColor: colors.secondary }}
     >
       {/* <div className="flex justify-between ">
@@ -96,7 +96,7 @@ export const EmployeeForm = () => {
           </div>
         </div>
       </div> */}
-      <div className="flex justify-between mb-6 mt-7">
+      <div className="flex justify-between mb-6 -mt-2">
         <div className="w-1/3 pr-6">
           <h2 className="text-lg font-medium">Employee Personal Information</h2>
         </div>

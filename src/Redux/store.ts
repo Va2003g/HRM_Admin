@@ -5,3 +5,5 @@ export const store = configureStore({
     userData: UserData,
   },
 });
+
+export type RootState = ReturnType<typeof store.getState>;

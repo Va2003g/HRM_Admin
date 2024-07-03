@@ -6,7 +6,7 @@ import { AddUser, auth, provider } from "../../Backend";
 import { useDispatch } from "react-redux";
 import { update } from "../../Redux/UserData/UserDataSlice";
 import { useNavigate } from "react-router-dom";
-
+import { Route } from "../../routes";
 export function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ export function Login() {
         if(displayName!==null && email!==null && photoURL!==null) AddUser({displayName,email,photoURL})
         else console.log('some data field in null')
         dispatch(update({displayName,email,photoURL}))
-        navigate('/dashboard')
+        navigate(Route.DASHBOARD)
         console.log("result after signing in", result.user);
       })
       .catch((error) => {
