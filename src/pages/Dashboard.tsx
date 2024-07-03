@@ -7,7 +7,10 @@ export const Dashboard = () => {
       <Navbar />
       <div className="flex gap-3">
         <Sidebar/>
+        <div className="mt-9">
         <Service/>
+
+        </div>
       </div>
     </div>
   );

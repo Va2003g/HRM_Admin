@@ -2,9 +2,14 @@ import React from "react";
 import { signInWithPopup } from "firebase/auth";
 
 import { hero, logo, Google } from "../../assets";
-import { auth, provider } from "../../Backend";
+import { AddUser, auth, provider } from "../../Backend";
+import { useDispatch } from "react-redux";
+import { update } from "../../Redux/UserData/UserDataSlice";
+import { useNavigate } from "react-router-dom";
 
 export function Login() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   function handleLogin() {
     signInWithPopup(auth, provider)
       .then((result) => {
@@ -12,12 +17,17 @@ export function Login() {
         console.log(displayName);
         console.log(email);
         console.log(photoURL);
+        if(displayName!==null && email!==null && photoURL!==null) AddUser({displayName,email,photoURL})
+        else console.log('some data field in null')
+        dispatch(update({displayName,email,photoURL}))
+        navigate('/dashboard')
         console.log("result after signing in", result.user);
       })
       .catch((error) => {
         console.log("error while signing in", error);
       });
   }
+
   return (
     <div className="login w-full h-full flex relative justify-evenly bg-gradient-to-b from-[#4D62B3]/[0.3] to-[#849BDA]/[0.4] ">
       <div className="image relative top-[168.14px]">

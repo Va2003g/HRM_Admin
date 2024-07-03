@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 export function Service() {
   const divStyles =
-    "group inline-block w-[163px] h-[160px] bg-white border transition-all ease-in-out duration-[0.6s] mr-[20px] mb-[15px] shadow-xl hover:shadow-2xl rounded-lg";
+    "group inline-block w-[163px] h-[160px] bg-white border transition-all ease-in-out duration-[0.6s] mr-[20px] mb-[15px] shadow-xl hover:shadow-2xl rounded-lg cursor-pointer";
   const infoIcon =
     "relative left-2 top-[4px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-lg";
   const mainIcon = "mx-auto text-7xl m-3";
