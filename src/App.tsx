@@ -1,13 +1,16 @@
 import React from 'react';
 import './App.css';
 import { Login } from './components';
-import Dashboard from './pages/Dashboard';
-
+import {Dashboard,AddEmployee} from './pages';
+import {Routes,Route} from 'react-router-dom'
 function App() {
   return (
     <div className="App">
-      {/* <Login/> */}
-      <Dashboard/>
+      <Routes>
+        <Route path='/' element={<Login/>}/>
+        <Route path='/dashboard' element={<Dashboard/>}/>
+        <Route path='/addEmployee' element={<AddEmployee/>}/>
+      </Routes>
     </div>
   );
 }

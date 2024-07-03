@@ -6,6 +6,7 @@ import { FaRegCalendarCheck } from "react-icons/fa6";
 import { IoReceiptOutline } from "react-icons/io5";
 import { BiReceipt } from "react-icons/bi";
 import { GrAnnounce } from "react-icons/gr";
+import { useNavigate } from "react-router-dom";
 
 export function Service() {
   const divStyles =
@@ -19,10 +20,11 @@ export function Service() {
     console.log("targetParent: ", targetParent);
     window.alert(`${targetParent} is clicked`);
   }
+  const navigate = useNavigate();
 
   return (
     <div className="flex flex-wrap">
-      <div className={divStyles}>
+      <div className={divStyles} onClick={()=>navigate('/addEmployee')}>
         <CiCircleInfo className={infoIcon} onClick={handleEmployeeClick} />
         <FcBusinessman className={mainIcon} />
         <h3 className={text}>Manage Employees</h3>
