@@ -3,4 +3,11 @@ export enum Route {
     LOGIN_PAGE='/',
     ADD_EMPLOYEE = '/addEmployee',
     PROFILE = '/profile',
+    PROJECT ='/project',
+    TIME_SHEET = '/timesheet',
+    LEAVE_TRACKER = '/leaves',
+    ATTENDANCE = '/attendance',
+    PAY_ROLL = '/payroll',
+    PAY_SLIP = '/payslip',
+    ANNOUCEMENTS = './annoucements'
 }

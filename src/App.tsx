@@ -10,6 +10,7 @@ function App() {
         <Route path='/' element={<Login/>}/>
         <Route path='/dashboard' element={<Dashboard/>}/>
         <Route path='/addEmployee' element={<AddEmployee/>}/>
+        <Route path='/*' element={<div>Coming Soon</div>}/>
       </Routes>
     </div>
   );

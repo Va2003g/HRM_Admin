@@ -7,6 +7,7 @@ import { IoReceiptOutline } from "react-icons/io5";
 import { BiReceipt } from "react-icons/bi";
 import { GrAnnounce } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
+import { Route } from "../../routes";
 
 export function Service() {
   const divStyles =
@@ -24,7 +25,7 @@ export function Service() {
 
   return (
     <div className="flex flex-wrap">
-      <div className={divStyles} onClick={()=>navigate('/addEmployee')}>
+      <div className={divStyles} onClick={()=>navigate(Route.ADD_EMPLOYEE)}>
         <CiCircleInfo className={infoIcon} onClick={handleEmployeeClick} />
         <FcBusinessman className={mainIcon} />
         <h3 className={text}>Manage Employees</h3>

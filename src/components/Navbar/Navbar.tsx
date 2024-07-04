@@ -4,7 +4,7 @@ import { RootState } from "../../Redux/store";
 import { Route } from "../../routes";
 import { signOut } from "firebase/auth";
 import { auth } from "../../Backend";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FcBusinessman } from "react-icons/fc";
 
 export const Navbar = () => {
@@ -33,25 +33,26 @@ export const Navbar = () => {
             </div>
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
-                <a
-                  href={Route.DASHBOARD}
+                <Link
+                  to={Route.DASHBOARD}
                   className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                   aria-current="page"
                 >
                   Dashboard
-                </a>
-                <a
-                  href={Route.ADD_EMPLOYEE}
+                </Link>
+                <Link
+                  to={Route.ADD_EMPLOYEE}
                   className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                 >
-                  Employees
-                </a>
-                <a
-                  href={Route.DASHBOARD}
+                  Add Employees
+                </Link>
+                <Link
+                  to={Route.DASHBOARD}
                   className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                 >
                   Projects
-                </a>
+                </Link>
+
               </div>
             </div>
           </div>
@@ -103,14 +104,14 @@ export const Navbar = () => {
                 aria-orientation="vertical"
                 aria-labelledby="user-menu-button"
               >
-                <a
-                  href={Route.PROFILE}
+                <Link
+                  to={Route.PROFILE}
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   role="menuitem"
                   id="user-menu-item-0"
                 >
                   Your Profile
-                </a>
+                </Link>
                 <div
                   onClick={handleLogOut}
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
