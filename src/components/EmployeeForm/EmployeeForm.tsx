@@ -1,13 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+
+
 import colors from "../../colors";
 
-export const EmployeeForm = () => {
-  return (
-    <div
-      className="w-full m-5 p-6 rounded-lg shadow-md h-screen hide-scrollbar"
-      style={{ backgroundColor: colors.secondary }}
-    >
-      {/* <div className="flex justify-between ">
+
+{/* <div className="flex justify-between ">
         <div className="w-1/3 pr-6">
           <h2 className="text-lg font-medium">Profile</h2>
         </div>
@@ -96,131 +93,234 @@ export const EmployeeForm = () => {
           </div>
         </div>
       </div> */}
+export interface formDataType {
+  firstName: string;
+  lastName: string;
+  email: string;
+  country: string;
+  role: 'Employee' | 'Admin' | 'SuperAdmin' | 'Manager';
+  dateOfJoining: string;
+  address: string;
+  contactNo: string;
+  city: string;
+  state: string;
+  postalCode: string;
+}
+
+export const EmployeeForm = () => {
+  const [formData, setFormData] = useState<formDataType>({
+    firstName: '',
+    lastName: '',
+    email: '',
+    country: '',
+    role: 'Employee',
+    dateOfJoining: '',
+    address: '',
+    contactNo: '',
+    city: '',
+    state: '',
+    postalCode: '',
+  });
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    console.log(formData);
+    setFormData({
+      firstName: '',
+      lastName: '',
+      email: '',
+      country: '',
+      role: 'Employee',
+      dateOfJoining: '',
+      address: '',
+      contactNo: '',
+      city: '',
+      state: '',
+      postalCode: '',
+    })
+  };
+
+  const changeHandler = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = event.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  return (
+    <div
+      className="w-full m-5 p-6 rounded-lg shadow-md h-screen hide-scrollbar"
+      style={{ backgroundColor: colors.secondary }}
+    >
       <div className="flex justify-between mb-6 -mt-2">
         <div className="w-1/3 pr-6">
           <h2 className="text-lg font-medium">Employee Personal Information</h2>
         </div>
-        <div className="w-2/3 bg-white rounded-lg shadow-md p-4 ">
-          <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                First name
-              </label>
-              <input
-                type="text"
-                className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Last name
-              </label>
-              <input
-                type="text"
-                className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              />
-            </div>
-            <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-gray-700">
-                Email address
-              </label>
-              <input
-                type="email"
-                className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              />
-            </div>
-            <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-gray-700">
-                Country
-              </label>
-              <select className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                <option>India</option>
-                <option>United States</option>
-                <option>Canada</option>
-                <option>Mexico</option>
-              </select>
-            </div>
-            <div className="sm:col-span-2 flex gap-2">
+        <div className="w-2/3 bg-white rounded-lg shadow-md p-4">
+          <form onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Role
-                </label>
-                <select className="p-2 h-10 mt-1 col-span-10 block w-[500px] border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                  <option>Employee</option>
-                  <option>Admin</option>
-                </select>
-              </div>
-
-              <div className="">
-                <label className="block text-sm font-medium text-gray-700">
-                  Date of Joining
+                  First name
                 </label>
                 <input
-                  type="date"
-                  className="p-2 h-10 mt-1 block w-[210px] border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                  type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={changeHandler}
+                  className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Last name
+                </label>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={changeHandler}
+                  className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Email address
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={changeHandler}
+                  className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Country
+                </label>
+                <select
+                  name="country"
+                  value={formData.country}
+                  onChange={changeHandler}
+                  className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                >
+                  <option value="">Select country</option>
+                  <option value="India">India</option>
+                  <option value="United States">United States</option>
+                  <option value="Canada">Canada</option>
+                  <option value="Mexico">Mexico</option>
+                </select>
+              </div>
+              <div className="sm:col-span-2 flex gap-2">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Role
+                  </label>
+                  <select
+                    name="role"
+                    value={formData.role}
+                    onChange={changeHandler}
+                    className="p-2 h-10 mt-1 col-span-10 block w-[500px] border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                  >
+                    <option value="Employee">Employee</option>
+                    <option value="Admin">Admin</option>
+                    <option value="SuperAdmin">SuperAdmin</option>
+                    <option value="Manager">Manager</option>
+                  </select>
+                </div>
+
+                <div className="">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Date of Joining
+                  </label>
+                  <input
+                    type="date"
+                    name="dateOfJoining"
+                    value={formData.dateOfJoining}
+                    onChange={changeHandler}
+                    className="p-2 h-10 mt-1 block w-[210px] border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                  />
+                </div>
+              </div>
+              <div className="sm:col-span-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Street address
+                </label>
+                <input
+                  type="text"
+                  name="address"
+                  value={formData.address}
+                  onChange={changeHandler}
+                  className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Contact No.<span className="text-xs">(123-456-7890)</span>
+                </label>
+                <input
+                  type="number"
+                  name="contactNo"
+                  value={formData.contactNo}
+                  onChange={changeHandler}
+                  className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  City
+                </label>
+                <input
+                  type="text"
+                  name="city"
+                  value={formData.city}
+                  onChange={changeHandler}
+                  className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  State / Province
+                </label>
+                <input
+                  type="text"
+                  name="state"
+                  value={formData.state}
+                  onChange={changeHandler}
+                  className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  ZIP / Postal code
+                </label>
+                <input
+                  type="text"
+                  name="postalCode"
+                  value={formData.postalCode}
+                  onChange={changeHandler}
+                  className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
             </div>
-            <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-gray-700">
-                Street address
-              </label>
-              <input
-                type="text"
-                className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              />
+            <div className="flex justify-end mt-6">
+              <button
+                type="button"
+                className="mr-3 py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                onClick={handleSubmit}
+              >
+                Save
+              </button>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Contact No.<span className="text-xs">(123-456-7890)</span>
-              </label>
-              <input
-                type="number"
-                className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                City
-              </label>
-              <input
-                type="text"
-                className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                State / Province
-              </label>
-              <input
-                type="text"
-                className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                ZIP / Postal code
-              </label>
-              <input
-                type="text"
-                className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              />
-            </div>
-          </div>
-          <div className="flex justify-end mt-6">
-            <button
-              type="button"
-              className="mr-3 py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Save
-            </button>
-          </div>
+          </form>
         </div>
       </div>
     </div>
