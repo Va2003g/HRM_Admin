@@ -1,15 +1,18 @@
 import React from "react";
 import { CiCircleInfo } from "react-icons/ci";
 import { FcBusinessman, FcAlarmClock, FcLeave } from "react-icons/fc";
-import { GoProjectRoadmap } from "react-icons/go";
+import { FaFolder } from "react-icons/fa";
 import { FaRegCalendarCheck } from "react-icons/fa6";
 import { IoReceiptOutline } from "react-icons/io5";
 import { BiReceipt } from "react-icons/bi";
 import { GrAnnounce } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
 import { Route } from "../../routes";
+import { useDispatch } from "react-redux";
+import { setFalse } from "../../Redux/booleanSlice/booleanSlice";
 
 export function Service() {
+  const dispatch = useDispatch();
   const divStyles =
     "group inline-block w-[163px] h-[160px] bg-white border transition-all ease-in-out duration-[0.6s] mr-[20px] mb-[15px] shadow-xl hover:shadow-2xl rounded-lg cursor-pointer";
   const infoIcon =
@@ -25,14 +28,21 @@ export function Service() {
 
   return (
     <div className="flex flex-wrap">
-      <div className={divStyles} onClick={()=>navigate(Route.ADD_EMPLOYEE)}>
+      <div
+        className={divStyles}
+        onClick={() => {
+          navigate(Route.ADD_EMPLOYEE);
+          dispatch(setFalse("showEmployeeForm"));
+          dispatch(setFalse("showEmployees"));
+        }}
+      >
         <CiCircleInfo className={infoIcon} onClick={handleEmployeeClick} />
         <FcBusinessman className={mainIcon} />
         <h3 className={text}>Manage Employees</h3>
       </div>
       <div className={divStyles}>
         <CiCircleInfo className={infoIcon} />
-        <GoProjectRoadmap className={`${mainIcon} text-yellow-600 `} />
+        <FaFolder className={`${mainIcon} text-yellow-600 `} />
         <h3 className={text}>Projects</h3>
       </div>
       <div className={divStyles}>

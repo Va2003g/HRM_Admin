@@ -5,7 +5,11 @@ import { Route } from "../../routes";
 import { FaSnowman } from "react-icons/fa6";
 import { IoReceiptOutline } from "react-icons/io5";
 import { BiReceipt } from "react-icons/bi";
+import { useDispatch } from "react-redux";
+import { setFalse, setTrue } from "../../Redux/booleanSlice/booleanSlice";
 export const Sidebar = () => {
+  const dispatch = useDispatch();
+
   return (
     <div className="h-screen w-64 bg-white shadow-md rounded-2xl">
       <nav className="px-4 mt-10">
@@ -25,6 +29,10 @@ export const Sidebar = () => {
           style={({ isActive }) => ({
             color: isActive ? "blue" : "gray",
           })}
+          onClick={() => {
+            dispatch(setFalse("showEmployeeForm"));
+            dispatch(setTrue("showEmployees"));
+          }}
         >
           <FaUsers className="text-xl" />
           Show Employees

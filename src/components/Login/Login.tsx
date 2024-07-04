@@ -2,7 +2,7 @@ import React from "react";
 import { signInWithPopup } from "firebase/auth";
 
 import { hero, logo, Google } from "../../assets";
-import { AddUser, auth, provider } from "../../Backend";
+import { AddUser, auth, provider } from "../../backend";
 import { useDispatch } from "react-redux";
 import { update } from "../../Redux/UserData/UserDataSlice";
 import { useNavigate } from "react-router-dom";
@@ -17,10 +17,11 @@ export function Login() {
         console.log(displayName);
         console.log(email);
         console.log(photoURL);
-        if(displayName!==null && email!==null && photoURL!==null) AddUser({displayName,email,photoURL})
-        else console.log('some data field in null')
-        dispatch(update({displayName,email,photoURL}))
-        navigate(Route.DASHBOARD)
+        if (displayName !== null && email !== null && photoURL !== null)
+          AddUser({ displayName, email, photoURL });
+        else console.log("some data field in null");
+        dispatch(update({ displayName, email, photoURL }));
+        navigate(Route.DASHBOARD);
         console.log("result after signing in", result.user);
       })
       .catch((error) => {

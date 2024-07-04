@@ -4,7 +4,7 @@ import colors from "../../colors";
 export const EmployeeForm = () => {
   return (
     <div
-      className="w-full m-5 p-6 rounded-lg shadow-md h-[720px] hide-scrollbar"
+      className="w-full m-5 p-6 rounded-lg shadow-md h-screen hide-scrollbar"
       style={{ backgroundColor: colors.secondary }}
     >
       {/* <div className="flex justify-between ">
@@ -140,14 +140,26 @@ export const EmployeeForm = () => {
                 <option>Mexico</option>
               </select>
             </div>
-            <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-gray-700">
-                Role
-              </label>
-              <select className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                <option>Employee</option>
-                <option>Admin</option>
-              </select>
+            <div className="sm:col-span-2 flex gap-2">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Role
+                </label>
+                <select className="p-2 h-10 mt-1 col-span-10 block w-[500px] border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                  <option>Employee</option>
+                  <option>Admin</option>
+                </select>
+              </div>
+
+              <div className="">
+                <label className="block text-sm font-medium text-gray-700">
+                  Date of Joining
+                </label>
+                <input
+                  type="date"
+                  className="p-2 h-10 mt-1 block w-[210px] border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+              </div>
             </div>
             <div className="sm:col-span-2">
               <label className="block text-sm font-medium text-gray-700">

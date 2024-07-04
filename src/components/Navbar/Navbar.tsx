@@ -1,23 +1,27 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import { Route } from "../../routes";
 import { signOut } from "firebase/auth";
-import { auth } from "../../Backend";
+import { auth } from "../../backend";
 import { Link, useNavigate } from "react-router-dom";
 import { FcBusinessman } from "react-icons/fc";
+import { setFalse, setTrue } from "../../Redux/booleanSlice/booleanSlice";
 
 export const Navbar = () => {
   const userData = useSelector((state: RootState) => state.userData.data);
   const navigate = useNavigate();
-  const [showDropDown,setShowDropDown] = useState(false);
+  const [showDropDown, setShowDropDown] = useState(false);
   async function handleLogOut() {
-    signOut(auth).then(()=>{
-      navigate(Route.LOGIN_PAGE)
-    }).catch((err)=>{
-      alert(`Error while logging out ${err}`)
-    })
+    signOut(auth)
+      .then(() => {
+        navigate(Route.LOGIN_PAGE);
+      })
+      .catch((err) => {
+        alert(`Error while logging out ${err}`);
+      });
   }
+  const dispatch = useDispatch()
 
   return (
     <nav className="bg-gray-800">
@@ -43,6 +47,10 @@ export const Navbar = () => {
                 <Link
                   to={Route.ADD_EMPLOYEE}
                   className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                  onClick={() => {
+                    dispatch(setTrue("showEmployeeForm"));
+                    dispatch(setFalse("showEmployees"));
+                  }}
                 >
                   Add Employees
                 </Link>
@@ -52,7 +60,6 @@ export const Navbar = () => {
                 >
                   Projects
                 </Link>
-
               </div>
             </div>
           </div>
@@ -79,48 +86,55 @@ export const Navbar = () => {
 
             <div className="relative ml-3">
               <div className="flex gap-3 items-center">
-                {userData.displayName && <span className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
-                  {userData.displayName}
-                </span>}
+                {userData.displayName && (
+                  <span className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
+                    {userData.displayName}
+                  </span>
+                )}
                 <button
                   type="button"
                   className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                   id="user-menu-button"
                   aria-expanded="false"
                   aria-haspopup="true"
-                  onClick={()=>setShowDropDown(!showDropDown)}
+                  onClick={() => setShowDropDown(!showDropDown)}
                 >
-
-                  {userData.photoURL ? <img
-                    className="h-8 w-8 rounded-full"
-                    src={userData.photoURL}
-                    alt=""
-                  /> : <FcBusinessman className="text-3xl"/>}
+                  {userData.photoURL ? (
+                    <img
+                      className="h-8 w-8 rounded-full"
+                      src={userData.photoURL}
+                      alt=""
+                    />
+                  ) : (
+                    <FcBusinessman className="text-3xl" />
+                  )}
                 </button>
               </div>
-              {showDropDown && <div
-                className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none cursor-pointer"
-                role="menu"
-                aria-orientation="vertical"
-                aria-labelledby="user-menu-button"
-              >
-                <Link
-                  to={Route.PROFILE}
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  role="menuitem"
-                  id="user-menu-item-0"
-                >
-                  Your Profile
-                </Link>
+              {showDropDown && (
                 <div
-                  onClick={handleLogOut}
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  role="menuitem"
-                  id="user-menu-item-2"
+                  className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none cursor-pointer"
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="user-menu-button"
                 >
-                  Sign out
+                  <Link
+                    to={Route.PROFILE}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    role="menuitem"
+                    id="user-menu-item-0"
+                  >
+                    Your Profile
+                  </Link>
+                  <div
+                    onClick={handleLogOut}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    role="menuitem"
+                    id="user-menu-item-2"
+                  >
+                    Sign out
+                  </div>
                 </div>
-              </div>}
+              )}
             </div>
           </div>
         </div>
