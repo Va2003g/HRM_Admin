@@ -2,25 +2,32 @@ import React from "react";
 import { signInWithPopup } from "firebase/auth";
 
 import { hero, logo, Google } from "../../assets";
-import { AddUser, auth, provider } from "../../backend";
+import { AddUser, auth, db, provider } from "../../backend";
 import { useDispatch } from "react-redux";
 import { update } from "../../Redux/UserData/UserDataSlice";
 import { useNavigate } from "react-router-dom";
 import { Route } from "../../routes";
+import { query, collection, where, getDocs } from "firebase/firestore";
 export function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   function handleLogin() {
     signInWithPopup(auth, provider)
-      .then((result) => {
+      .then(async (result) => {
         const { displayName, email, photoURL } = result.user;
         console.log(displayName);
         console.log(email);
         console.log(photoURL);
-        if (displayName !== null && email !== null && photoURL !== null)
-          AddUser({ displayName, email, photoURL });
-        else console.log("some data field in null");
-        dispatch(update({ displayName, email, photoURL }));
+        const queryForFindingUser = query(
+          collection(db, "Employees"),
+          where("email", "==", email)
+        );
+        const querySnapshot = await getDocs(queryForFindingUser);
+
+        if (!querySnapshot.empty) {
+          const userDoc = querySnapshot.docs[0];
+          dispatch(update(userDoc.data()));
+        }
         navigate(Route.DASHBOARD);
         console.log("result after signing in", result.user);
       })

@@ -1,7 +1,7 @@
-import {query,collection, addDoc,getDocs,where} from 'firebase/firestore'
-import { db } from './index'
-import {userDataType} from '../Redux/UserData/UserDataSlice'
-export const AddUser = async(data:userDataType)=>{
+import {query,collection, addDoc,getDocs,where, doc, setDoc} from 'firebase/firestore'
+import { db } from './Firebase'
+import { formDataType } from '../components'
+export const AddUser = async(data:formDataType)=>{
     try{
         let id;
         const queryForFindingUser = query(collection(db, "Employees" ),where("email", "==", data.email))
@@ -14,6 +14,8 @@ export const AddUser = async(data:userDataType)=>{
             return id;
         }else{
             id = checkUser.docs[0].id;
+            const userDoc = doc(db, "Employees", id);
+            await setDoc(userDoc, data, { merge: true });
         }
         return id;
     }catch(err)

@@ -22,7 +22,7 @@ export const Navbar = () => {
       });
   }
   const dispatch = useDispatch()
-
+  const displayName = userData.firstName + " " + userData.lastName
   return (
     <nav className="bg-gray-800">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -86,9 +86,9 @@ export const Navbar = () => {
 
             <div className="relative ml-3">
               <div className="flex gap-3 items-center">
-                {userData.displayName && (
+                {displayName && (
                   <span className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
-                    {userData.displayName}
+                    {displayName}
                   </span>
                 )}
                 <button
