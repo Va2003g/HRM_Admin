@@ -2,12 +2,19 @@ import React from "react";
 import { signInWithPopup } from "firebase/auth";
 
 import { hero, logo, Google } from "../../assets";
-import { AddUser, auth, db, provider } from "../../backend";
+import { auth, db, provider } from "../../backend";
 import { useDispatch } from "react-redux";
 import { update } from "../../Redux/UserData/UserDataSlice";
 import { useNavigate } from "react-router-dom";
 import { Route } from "../../routes";
-import { query, collection, where, getDocs } from "firebase/firestore";
+import {
+  query,
+  collection,
+  where,
+  getDocs,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 export function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,7 +33,18 @@ export function Login() {
 
         if (!querySnapshot.empty) {
           const userDoc = querySnapshot.docs[0];
-          dispatch(update(userDoc.data()));
+          const userRef = doc(db, "Employees", userDoc.id);
+
+          // Update the photoURL in the backend
+          await updateDoc(userRef, { photoURL });
+
+          // Dispatch the updated user data
+          const updatedUserData = {
+            ...userDoc.data(),
+            photoURL,
+          };
+          dispatch(update(updatedUserData));
+          // dispatch(update(userDoc.data()));
         }
         navigate(Route.DASHBOARD);
         console.log("result after signing in", result.user);

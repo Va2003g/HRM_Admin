@@ -126,8 +126,9 @@ export const EmployeeForm = () => {
   });
   const validateForm = () => {
     const newErrors: Partial<formDataType> = {};
+
     Object.keys(formData).forEach(key => {
-      if (!formData[key as keyof formDataType]) {
+      if (key!=='photoURL'&&!formData[key as keyof formDataType]) {
         newErrors[key as keyof formDataType] = '*This field is required';
       }
     });
@@ -506,7 +507,7 @@ export const EmployeeForm = () => {
                   ZIP / Postal code
                 </label>
                 <input
-                  type="text"
+                  type="number"
                   name="postalCode"
                   value={formData.postalCode}
                   onChange={changeHandler}
