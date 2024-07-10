@@ -40,7 +40,7 @@ export function Service() {
         <FcBusinessman className={mainIcon} />
         <h3 className={text}>Manage Employees</h3>
       </div>
-      <div className={divStyles}>
+      <div className={divStyles} onClick={()=>navigate(Route.PROJECT)}>
         <CiCircleInfo className={infoIcon} />
         <FaFolder className={`${mainIcon} text-yellow-600 `} />
         <h3 className={text}>Projects</h3>
