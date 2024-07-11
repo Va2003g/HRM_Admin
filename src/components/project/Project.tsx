@@ -1,9 +1,11 @@
-import React, { ChangeEvent, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import { AiFillCloseCircle } from "react-icons/ai";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { db } from "../../backend";
+import { update, updateNewProject } from "../../Redux/projectSlice";
 
 export interface ProjectData {
   title: string;
@@ -25,37 +27,48 @@ export const Project = () => {
     startDate: "",
     endDate: "",
   });
+  const dispatch = useDispatch();
   const employeesData = useSelector(
     (state: RootState) => state.employeeData.employeeData
   );
-  const projects: any[] = [
-    {
-      name: "Lindsay Walton",
-      team: "Front-end Developer",
-      startDate: "2023-01-15",
-      endDate: "2023-06-30",
-      status: "Not Alloted",
-    },
-  ];
 
-  function handleStartDataChange(date: Date | null) {
-    if(date!=null)
-    setNewProject((prevstate) => {
-      return {
-        ...prevstate,
-        startDate: date.toISOString(),
-      };
-    });
-  }
-  function handleEndDataChange(date: Date | null) {
-    if(date!=null)
-    setNewProject((prevstate) => {
-      return {
-        ...prevstate,
-        endDate: date.toISOString(),
-      };
-    });
-  }
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "Projects"));
+        const projectsData = querySnapshot.docs.map((doc) => ({
+          ...doc.data(),
+        })) as ProjectData[];
+        projectsData.forEach(async (project) => {
+          const employeeDocRef = doc(
+            collection(db, "Employees"),
+            project.employeeId
+          );
+          const employeeDoc = await getDoc(employeeDocRef);
+
+          if (employeeDoc.exists())
+            project.employeeId =
+              employeeDoc.get("firstName") + employeeDoc.get("lastName");
+        });
+        dispatch(updateNewProject(projectsData));
+      } catch (error) {
+        console.error("Error fetching projects: ", error);
+      }
+    };
+    fetchProjects();
+  }, [dispatch]);
+  const projects = useSelector(
+    (state: RootState) => state.projectData.projectData
+  );
+  // console.log("projects: ", projects);
+
+  const handleAssignProject = (employeeID: string) => {
+    setNewProject((prevstate) => ({
+      ...prevstate,
+      employeeId: employeeID,
+    }));
+    alert("Assignment Done");
+  };
   function handleChange(
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
@@ -64,11 +77,35 @@ export const Project = () => {
       ...prevstate,
       [event.target.name]: event.target.value,
     }));
-    console.log(newProject)
+    console.log(newProject);
   }
-  function saveProject() {
-    console.log("newProject", newProject);
-  }
+
+  const saveProject = async () => {
+    console.log(newProject);
+    try {
+      await addDoc(collection(db, "Projects"), newProject);
+      console.log("Project saved successfully!");
+      const employeeDocRef = doc(
+        collection(db, "Employees"),
+        newProject.employeeId
+      );
+      const employeeDoc = await getDoc(employeeDocRef);
+
+      if (employeeDoc.exists())
+        newProject.employeeId =
+          employeeDoc.get("firstName") + employeeDoc.get("lastName");
+      dispatch(update(newProject));
+      setNewProject({
+        title: "",
+        description: "",
+        employeeId: "",
+        startDate: "",
+        endDate: "",
+      });
+    } catch (error) {
+      console.error("Error saving project: ", error);
+    }
+  };
 
   return (
     <div className="w-full flex flex-col h-screen">
@@ -80,9 +117,15 @@ export const Project = () => {
         }`}
       >
         <div className="flex justify-between flex-row items-center h-[20%]">
-          <h1 className="text-3xl left-[37%] relative text-white font-[Roboto] font-extrabold">
-            Assign this Jio Project
-          </h1>
+          {newProject.title.length !== 0 ? (
+            <h1 className="text-3xl left-[37%] relative text-white font-[Roboto] font-extrabold">
+              Assign "{newProject.title}" Project to
+            </h1>
+          ) : (
+            <h1 className="text-3xl left-[35%] relative text-white font-[Roboto] font-extrabold">
+              Kindly Create a Project First
+            </h1>
+          )}
           <AiFillCloseCircle
             className="text-6xl text-red-800 font-extrabold relative -top-10"
             onClick={() => setIsAssignLabelOpen(false)}
@@ -128,6 +171,7 @@ export const Project = () => {
                 <div className="text-sm text-gray-500">{employee.role}</div>
                 <div
                   className={`text-sm font-medium px-4 py-2 w-[100px] text-center rounded-lg bg-[#3FC28A]/[0.1] text-[#3FC28A]`}
+                  onClick={() => handleAssignProject(employee.id)}
                 >
                   ASSIGN
                 </div>
@@ -207,56 +251,63 @@ export const Project = () => {
                         aria-orientation="vertical"
                         aria-labelledby="options-menu"
                       >
-                        <DatePicker
-                          // selected={}
-                          onChange={(date) => {
-                            handleStartDataChange(date);
-                          }}
-                          inline
+                        <input
+                          type="date"
+                          onChange={handleChange}
+                          name="startDate"
+                          value={newProject.startDate}
                         />
                       </div>
                     </div>
                   )}
                 </div>
 
-                <button
-                  className="flex items-center text-gray-500 hover:bg-gray-100 rounded-full p-2"
-                  onClick={() => setisDueCalenderOpen(!isDueCalenderOpen)}
-                >
-                  <svg
-                    className="w-5 h-5 mr-1"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
+                <div className="relative">
+                  <button
+                    className="flex items-center text-gray-500 hover:bg-gray-100 rounded-full p-2"
+                    onClick={() => setisDueCalenderOpen(!isDueCalenderOpen)}
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    ></path>
-                  </svg>
-                  Due date
-                </button>
-                {isDueCalenderOpen && (
-                  <div className="absolute z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-                    <div
-                      className="py-1"
-                      role="menu"
-                      aria-orientation="vertical"
-                      aria-labelledby="options-menu"
+                    <svg
+                      className="w-5 h-5 mr-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <DatePicker
-                        // selected={new Date()}
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      ></path>
+                    </svg>
+                    Due date
+                  </button>
+                  {isDueCalenderOpen && (
+                    <div className="absolute z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                      <div
+                        className="py-1"
+                        role="menu"
+                        aria-orientation="vertical"
+                        aria-labelledby="options-menu"
+                      >
+                        {/* <DatePicker
+                       selected={new Date(newProject.endDate)}
                         onChange={(date) => {
                           handleEndDataChange(date);
                         }}
                         inline
-                      />
+                      /> */}
+                        <input
+                          type="date"
+                          onChange={handleChange}
+                          name="endDate"
+                          value={newProject.endDate}
+                        />
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
               <button
                 className="bg-indigo-600 text-white px-4 py-2 mt-3 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
@@ -299,16 +350,16 @@ export const Project = () => {
                 Project Name
               </div>
               <div className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Team
+                Employee
+              </div>
+              <div className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Description
               </div>
               <div className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Start Date
               </div>
               <div className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 End Date
-              </div>
-              <div className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
               </div>
             </div>
             <div
@@ -324,29 +375,19 @@ export const Project = () => {
                   }`}
                 >
                   <div className="text-sm font-medium text-gray-900">
-                    {project.name}
+                    {project.title}
                   </div>
-                  <div className="text-sm text-gray-500">{project.team}</div>
-                  <div className="text-sm text-gray-500">
+                  <div className="text-sm font-medium text-gray-900">
+                    {project.employeeId}
+                  </div>
+                  <div className="text-sm font-medium text-gray-900">
+                    {project.description}
+                  </div>
+                  <div className="text-sm font-medium text-gray-900">
                     {project.startDate}
                   </div>
-                  <div className="text-sm text-gray-500">{project.endDate}</div>
-                  <div
-                    className={`text-sm font-medium px-4 py-2 w-[130px] rounded-lg ${
-                      project.status.toLowerCase() === "completed" &&
-                      "bg-[#3FC28A]/[0.1] text-[#3FC28A]"
-                    }  ${
-                      project.status.toLowerCase() === "in progress" &&
-                      "bg-[#EFBE12]/[0.1] text-[#EFBE12]"
-                    }  ${
-                      project.status.toLowerCase() === "not alloted" &&
-                      "bg-[#F45B69]/[0.1] text-[#F45B69]"
-                    } `}
-                  >
-                    {
-                      // project.status.toLowerCase() === 'completed'
-                      project.status.toUpperCase()
-                    }
+                  <div className="text-sm font-medium text-gray-900">
+                    {project.endDate}
                   </div>
                 </div>
               ))}
