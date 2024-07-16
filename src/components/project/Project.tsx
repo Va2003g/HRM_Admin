@@ -31,32 +31,44 @@ export const Project = () => {
   const employeesData = useSelector(
     (state: RootState) => state.employeeData.employeeData
   );
-
+  
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "Projects"));
-        const projectsData = querySnapshot.docs.map((doc) => ({
-          ...doc.data(),
-        })) as ProjectData[];
-        projectsData.forEach(async (project) => {
-          const employeeDocRef = doc(
-            collection(db, "Employees"),
-            project.employeeId
-          );
+        const projectsData: ProjectData[] = [];
+  
+        for (const docus of querySnapshot.docs) {
+          const project = docus.data() as ProjectData;
+  
+          // Fetch the employee document based on project.employeeId
+          const employeeDocRef = doc(collection(db, "Employees"), project.employeeId);
           const employeeDoc = await getDoc(employeeDocRef);
-
-          if (employeeDoc.exists())
-            project.employeeId =
-              employeeDoc.get("firstName") + employeeDoc.get("lastName");
-        });
+  
+          if (employeeDoc.exists()) {
+            const employeeName = employeeDoc.get("firstName") + " " + employeeDoc.get("lastName");
+  
+            // Create a new project object with the employee name
+            const updatedProject = {
+              ...project,
+              employeeId: employeeName,
+            };
+  
+            projectsData.push(updatedProject);
+          } else {
+            console.error("No such employee!");
+          }
+        }
+  
         dispatch(updateNewProject(projectsData));
       } catch (error) {
         console.error("Error fetching projects: ", error);
       }
     };
+  
     fetchProjects();
   }, [dispatch]);
+  
   const projects = useSelector(
     (state: RootState) => state.projectData.projectData
   );
@@ -170,7 +182,7 @@ export const Project = () => {
                 </div>
                 <div className="text-sm text-gray-500">{employee.role}</div>
                 <div
-                  className={`text-sm font-medium px-4 py-2 w-[100px] text-center rounded-lg bg-[#3FC28A]/[0.1] text-[#3FC28A]`}
+                  className={`text-sm font-medium px-4 py-2 w-[100px] text-center rounded-lg bg-[#3FC28A]/[0.1] text-[#3FC28A] cursor-pointer`}
                   onClick={() => handleAssignProject(employee.id)}
                 >
                   ASSIGN

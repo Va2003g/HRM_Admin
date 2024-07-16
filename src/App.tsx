@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Login,Project } from './components';
+import { Login,Project, TimeSheet } from './components';
 import {Dashboard,AddEmployee,Layout} from './pages';
 import {Routes,Route} from 'react-router-dom'
 function App() {
@@ -12,8 +12,9 @@ function App() {
         <Route path='/addEmployee' element={<AddEmployee/>}/>
         <Route path='/hr' element={<Layout/>}>
             <Route path='project' element={<Project/>}/>
+            <Route path='timesheet' element={<TimeSheet/>}/>
+            <Route path='*' element={<div>Coming Soon</div>}/>
         </Route>
-        <Route path='/*' element={<div>Coming Soon</div>}/>
       </Routes>
     </div>
   );

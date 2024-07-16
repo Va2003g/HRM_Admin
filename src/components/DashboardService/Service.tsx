@@ -45,7 +45,7 @@ export function Service() {
         <FaFolder className={`${mainIcon} text-yellow-600 `} />
         <h3 className={text}>Projects</h3>
       </div>
-      <div className={divStyles}>
+      <div className={divStyles}  onClick={()=>navigate(Route.TIME_SHEET)}>
         <CiCircleInfo className={infoIcon} />
         <FcAlarmClock className={mainIcon} />
         <h3 className={text}>Time Sheet</h3>
