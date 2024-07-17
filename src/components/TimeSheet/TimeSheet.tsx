@@ -1,11 +1,5 @@
-import {
-  collection,
-  onSnapshot,
-  updateDoc,
-  doc,
-  getDoc,
-} from "firebase/firestore";
-import React, { useCallback, useEffect, useState } from "react";
+import { collection, onSnapshot, doc, getDoc } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 import { db } from "../../backend";
 import { formDataType } from "../EmployeeForm";
 export interface TimeSheetDataType {
@@ -20,7 +14,7 @@ export interface TimeSheetDataType {
 
 export const TimeSheet = () => {
   const [timesheets, setTimesheets] = useState<TimeSheetDataType[]>([]);
-  
+
   useEffect(() => {
     const fetchEmployeeData = async (timesheet: TimeSheetDataType) => {
       const employeeDoc = doc(db, "Employees", timesheet.employeeId);
@@ -58,9 +52,7 @@ export const TimeSheet = () => {
 
     return () => unsubscribe();
   }, []);
-  const handleApproval = useCallback(async (id: string, status: string) => {
-    await updateDoc(doc(db, "Timesheets", id), { status });
-  }, []);
+
   console.log("timesheets", timesheets);
   return (
     <div>
@@ -74,8 +66,8 @@ export const TimeSheet = () => {
             <th>Description</th>
             <th>Date</th>
             <th>Hours Worked</th>
-            <th>Status</th>
-            <th>Actions</th>
+            {/* <th>Status</th>
+            <th>Actions</th> */}
           </tr>
         </thead>
         <tbody>
@@ -89,26 +81,6 @@ export const TimeSheet = () => {
               <td>{timesheet.description}</td>
               <td>{timesheet.date.split("T")[0]}</td>
               <td>{timesheet.time}</td>
-              {/* <td className="py-2 px-4 border-b">{TimeSheetDataType.status}</td> */}
-              <td>
-                {/* {TimeSheetDataType.status === "Pending" && ( */}
-                {/* <button
-                  onClick={() =>
-                    handleApproval(TimeSheetDataType.id, "Approved")
-                  }
-                  className="bg-green-600 text-white font-semibold rounded-3xl"
-                >
-                  <CheckCircleIcon />
-                </button>
-                <button
-                  onClick={() =>
-                    handleApproval(TimeSheetDataType.id, "Rejected")
-                  }
-                  className="bg-red-600 text-white font-semibold rounded-3xl"
-                >
-                  <CancelIcon />
-                </button> */}
-              </td>
             </tr>
           ))}
         </tbody>
