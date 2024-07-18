@@ -50,7 +50,7 @@ export function Service() {
         <FcAlarmClock className={mainIcon} />
         <h3 className={text}>Time Sheet</h3>
       </div>
-      <div className={divStyles}>
+      <div className={divStyles} onClick={()=>navigate(Route.LEAVE_TRACKER)}>
         <CiCircleInfo className={infoIcon} />
         <FcLeave className={mainIcon} />
         <h3 className={text}>Leave Tracker</h3>

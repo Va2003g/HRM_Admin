@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 
-
 import colors from "../../colors";
-import { AddUser } from "../../backend";
+import { AddUser, db } from "../../backend";
+import { addDoc, collection } from "firebase/firestore";
 
-{/* <div className="flex justify-between ">
+{
+  /* <div className="flex justify-between ">
         <div className="w-1/3 pr-6">
           <h2 className="text-lg font-medium">Profile</h2>
         </div>
@@ -92,7 +93,8 @@ import { AddUser } from "../../backend";
             </button>
           </div>
         </div>
-      </div> */}
+      </div> */
+}
 export interface formDataType {
   firstName: string;
   lastName: string;
@@ -105,31 +107,31 @@ export interface formDataType {
   city: string;
   state: string;
   postalCode: string;
-  photoURL:string
+  photoURL: string;
 }
 
 export const EmployeeForm = () => {
   const [errors, setErrors] = useState<Partial<formDataType>>({});
   const [formData, setFormData] = useState<formDataType>({
-    firstName: '',
-    lastName: '',
-    email: '',
-    country: '',
-    role: 'Employee',
-    dateOfJoining: '',
-    address: '',
-    contactNo: '',
-    city: '',
-    state: '',
-    postalCode: '',
-    photoURL:'',
+    firstName: "",
+    lastName: "",
+    email: "",
+    country: "",
+    role: "Employee",
+    dateOfJoining: "",
+    address: "",
+    contactNo: "",
+    city: "",
+    state: "",
+    postalCode: "",
+    photoURL: "",
   });
   const validateForm = () => {
     const newErrors: Partial<formDataType> = {};
 
-    Object.keys(formData).forEach(key => {
-      if (key!=='photoURL'&&!formData[key as keyof formDataType]) {
-        newErrors[key as keyof formDataType] = '*This field is required';
+    Object.keys(formData).forEach((key) => {
+      if (key !== "photoURL" && !formData[key as keyof formDataType]) {
+        newErrors[key as keyof formDataType] = "*This field is required";
       }
     });
     setErrors(newErrors);
@@ -138,32 +140,46 @@ export const EmployeeForm = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (validateForm()){
-      console.log('OK WALA',formData);
-      AddUser(formData).then(()=>{
-        alert('Data Saved Successfully')
-      }).catch((err)=>alert(`Error while saving data ${err}`))
-      setFormData({
-        firstName: '',
-        lastName: '',
-        email: '',
-        country: '',
-        role: 'Employee',
-        dateOfJoining: '',
-        address: '',
-        contactNo: '',
-        city: '',
-        state: '',
-        postalCode: '',
-        photoURL:''
-      })
+    if (validateForm()) {
+      // console.log('OK WALA',formData);
+      AddUser(formData)
+        .then((id) => {
+          alert("Data Saved Successfully");
+          if (formData.role === "Employee") {
+            addDoc(collection(db, "Leaves Data"), {
+              PaidLeft: 12,
+              PaidTotal: 12,
+              SickLeft: 12,
+              SickTotal: 12,
+              UnpaidLeft: 12,
+              UnpaidTotal: 12,
+              EmployeeId: id,
+            });
+          }
+        })
+        .catch((err) => alert(`Error while saving data ${err}`));
 
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        country: "",
+        role: "Employee",
+        dateOfJoining: "",
+        address: "",
+        contactNo: "",
+        city: "",
+        state: "",
+        postalCode: "",
+        photoURL: "",
+      });
     }
     console.log(formData);
-    
   };
 
-  const changeHandler = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const changeHandler = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = event.target;
     setFormData((prevState) => ({
       ...prevState,
@@ -171,7 +187,7 @@ export const EmployeeForm = () => {
     }));
     setErrors((prevState) => ({
       ...prevState,
-      [name]: '',
+      [name]: "",
     }));
   };
 
@@ -372,7 +388,11 @@ export const EmployeeForm = () => {
                   onChange={changeHandler}
                   className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
-                {errors.firstName && <p className="text-red-500 text-sm absolute">{errors.firstName}</p>}
+                {errors.firstName && (
+                  <p className="text-red-500 text-sm absolute">
+                    {errors.firstName}
+                  </p>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -385,7 +405,9 @@ export const EmployeeForm = () => {
                   onChange={changeHandler}
                   className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
-                {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
+                {errors.lastName && (
+                  <p className="text-red-500 text-sm">{errors.lastName}</p>
+                )}
               </div>
               <div className="sm:col-span-2">
                 <label className="block text-sm font-medium text-gray-700">
@@ -398,7 +420,9 @@ export const EmployeeForm = () => {
                   onChange={changeHandler}
                   className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
-                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+                {errors.email && (
+                  <p className="text-red-500 text-sm">{errors.email}</p>
+                )}
               </div>
               <div className="sm:col-span-2">
                 <label className="block text-sm font-medium text-gray-700">
@@ -416,7 +440,9 @@ export const EmployeeForm = () => {
                   <option value="Canada">Canada</option>
                   <option value="Mexico">Mexico</option>
                 </select>
-                {errors.country && <p className="text-red-500 text-sm">{errors.country}</p>}
+                {errors.country && (
+                  <p className="text-red-500 text-sm">{errors.country}</p>
+                )}
               </div>
               <div className="sm:col-span-2 flex gap-2">
                 <div>
@@ -434,7 +460,9 @@ export const EmployeeForm = () => {
                     {/* <option value="SuperAdmin">SuperAdmin</option> */}
                     <option value="Manager">Manager</option>
                   </select>
-                  {errors.role && <p className="text-red-500 text-sm">{errors.role}</p>}
+                  {errors.role && (
+                    <p className="text-red-500 text-sm">{errors.role}</p>
+                  )}
                 </div>
                 <div className="">
                   <label className="block text-sm font-medium text-gray-700">
@@ -447,7 +475,11 @@ export const EmployeeForm = () => {
                     onChange={changeHandler}
                     className="p-2 h-10 mt-1 block w-[210px] border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                   />
-                  {errors.dateOfJoining && <p className="text-red-500 text-sm">{errors.dateOfJoining}</p>}
+                  {errors.dateOfJoining && (
+                    <p className="text-red-500 text-sm">
+                      {errors.dateOfJoining}
+                    </p>
+                  )}
                 </div>
               </div>
               <div className="sm:col-span-2">
@@ -461,7 +493,9 @@ export const EmployeeForm = () => {
                   onChange={changeHandler}
                   className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
-                {errors.address && <p className="text-red-500 text-sm">{errors.address}</p>}
+                {errors.address && (
+                  <p className="text-red-500 text-sm">{errors.address}</p>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -474,7 +508,9 @@ export const EmployeeForm = () => {
                   onChange={changeHandler}
                   className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
-                {errors.contactNo && <p className="text-red-500 text-sm">{errors.contactNo}</p>}
+                {errors.contactNo && (
+                  <p className="text-red-500 text-sm">{errors.contactNo}</p>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -487,7 +523,9 @@ export const EmployeeForm = () => {
                   onChange={changeHandler}
                   className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
-                {errors.city && <p className="text-red-500 text-sm">{errors.city}</p>}
+                {errors.city && (
+                  <p className="text-red-500 text-sm">{errors.city}</p>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -500,7 +538,9 @@ export const EmployeeForm = () => {
                   onChange={changeHandler}
                   className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
-                {errors.state && <p className="text-red-500 text-sm">{errors.state}</p>}
+                {errors.state && (
+                  <p className="text-red-500 text-sm">{errors.state}</p>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -513,7 +553,9 @@ export const EmployeeForm = () => {
                   onChange={changeHandler}
                   className="p-2 h-10 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
-                {errors.postalCode && <p className="text-red-500 text-sm">{errors.postalCode}</p>}
+                {errors.postalCode && (
+                  <p className="text-red-500 text-sm">{errors.postalCode}</p>
+                )}
               </div>
             </div>
             <div className="flex justify-end mt-6">
