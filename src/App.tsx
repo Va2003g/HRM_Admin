@@ -3,6 +3,7 @@ import './App.css';
 import { Login,Project, TimeSheet } from './components';
 import {Dashboard,AddEmployee,Layout} from './pages';
 import {Routes,Route} from 'react-router-dom'
+import LeaveTracker from './components/LeaveTracker/LeaveTracker';
 function App() {
   return (
     <div className="App">
@@ -13,6 +14,7 @@ function App() {
         <Route path='/hr' element={<Layout/>}>
             <Route path='project' element={<Project/>}/>
             <Route path='timesheet' element={<TimeSheet/>}/>
+            <Route path='leaves' element={<LeaveTracker/>}/>
             <Route path='*' element={<div>Coming Soon</div>}/>
         </Route>
       </Routes>
