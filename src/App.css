@@ -20,6 +20,10 @@
   scrollbar-width: none;  /* Firefox */
 }
 
+.react-calendar__tile {
+  width: 200px;
+}
+
 /*Media queries*/
 @media screen and (max-width:1230px){
   .login{

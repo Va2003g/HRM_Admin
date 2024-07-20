@@ -55,7 +55,7 @@ export function Service() {
         <FcLeave className={mainIcon} />
         <h3 className={text}>Leave Tracker</h3>
       </div>
-      <div className={divStyles}>
+      <div className={divStyles} onClick={()=>navigate(Route.ATTENDANCE)}>
         <CiCircleInfo className={infoIcon} />
         <FaRegCalendarCheck className={`${mainIcon} text-yellow-300`} />
         <h3 className={text}>Attendance</h3>

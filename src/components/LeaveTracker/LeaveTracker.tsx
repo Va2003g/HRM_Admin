@@ -50,7 +50,7 @@ const DashboardItem = ({ icon, value, total, label }: DashboardPropType) => (
   </div>
 );
 
-const LeaveTracker = () => {
+export const LeaveTracker = () => {
   const [leaves, setLeaves] = useState<LeaveFormType[]>([]);
   const [isListExpanded, setIsListExpanded] = useState(false);
   const employeeData = useSelector(

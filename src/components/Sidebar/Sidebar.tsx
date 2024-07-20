@@ -2,16 +2,15 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { FaHome, FaUsers, FaFolder, FaCalendarAlt } from "react-icons/fa";
 import { Route } from "../../routes";
-import { FaSnowman } from "react-icons/fa6";
+import {FaRegCalendarCheck } from "react-icons/fa6";
 import { IoReceiptOutline } from "react-icons/io5";
-import { BiReceipt } from "react-icons/bi";
 import { useDispatch } from "react-redux";
 import { setFalse, setTrue } from "../../Redux/booleanSlice/booleanSlice";
 export const Sidebar = () => {
   const dispatch = useDispatch();
 
   return (
-    <div className="h-screen w-64 bg-white shadow-md rounded-2xl">
+    <div className="w-64 h-screen bg-white shadow-md rounded-2xl flex flex-col">
       <nav className="px-4 mt-10">
         <NavLink
           to={Route.DASHBOARD}
@@ -69,28 +68,18 @@ export const Sidebar = () => {
         </NavLink>
 
         <NavLink
-          to={Route.PAY_SLIP}
+          to={Route.ATTENDANCE}
           className="flex items-center gap-3 py-3 text-gray-600"
           style={({ isActive }) => ({
             color: isActive ? "blue" : "gray",
           })}
         >
-          <BiReceipt className="text-xl" />
-          Pay Slip
+          <FaRegCalendarCheck className="text-xl" />
+          Attendance Tracker
         </NavLink>
       </nav>
-      <div className="px-4 mt-6">
-        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-          Your teams
-        </h3>
-        <div className="flex items-center gap-3 py-3 text-gray-600">
-          <div className="h-6 w-6 flex items-center justify-center bg-gray-200 rounded-full">
-            C
-          </div>
-          Currently not in any Project
-        </div>
-      </div>
-      <nav className="px-4 mt-6 relative top-[29%] left-3">
+
+      {/* <nav className="align-bottom">
         <NavLink
           to={Route.PROFILE}
           className="flex items-center gap-3 py-3 text-gray-600 text-lg"
@@ -98,7 +87,7 @@ export const Sidebar = () => {
           <FaSnowman className="text-[22px]" />
           Profile
         </NavLink>
-      </nav>
+      </nav> */}
     </div>
   );
 };

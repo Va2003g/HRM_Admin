@@ -108,6 +108,7 @@ export interface formDataType {
   state: string;
   postalCode: string;
   photoURL: string;
+  [key:string]:string;
 }
 
 export const EmployeeForm = () => {
