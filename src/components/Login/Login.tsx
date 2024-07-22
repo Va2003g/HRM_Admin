@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { signInWithPopup } from "firebase/auth";
 
 import { hero, logo, Google } from "../../assets";
 import { auth, db, provider } from "../../backend";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { update } from "../../Redux/UserData/UserDataSlice";
 import { useNavigate } from "react-router-dom";
 import { Route } from "../../routes";
@@ -15,9 +15,16 @@ import {
   updateDoc,
   doc,
 } from "firebase/firestore";
+import { RootState } from "../../Redux/store";
 export function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const user = useSelector((state: RootState) => state.userData.data);
+  useEffect(() => {
+    if (user) {
+      navigate(Route.DASHBOARD);
+    }
+  }, [user, navigate]);
   function handleLogin() {
     signInWithPopup(auth, provider)
       .then(async (result) => {

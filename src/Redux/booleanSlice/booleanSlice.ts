@@ -7,6 +7,7 @@ interface BooleanState{
 const initialState:BooleanState={
     showEmployeeForm:false,
     showEmployees:false,
+    loginLoader:false,
 }
 
 export const booleanSlice = createSlice({

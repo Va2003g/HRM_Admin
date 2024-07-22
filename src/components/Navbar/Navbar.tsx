@@ -10,11 +10,13 @@ import { setFalse, setTrue } from "../../Redux/booleanSlice/booleanSlice";
 
 export const Navbar = () => {
   const userData = useSelector((state: RootState) => state.userData.data);
+  console.log('userData in navbar: ', userData)
   const navigate = useNavigate();
   const [showDropDown, setShowDropDown] = useState(false);
   async function handleLogOut() {
     signOut(auth)
       .then(() => {
+        console.log('sigend out')
         navigate(Route.LOGIN_PAGE);
       })
       .catch((err) => {
