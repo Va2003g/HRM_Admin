@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { formDataType } from "../../components";
 
-interface formDataTypeWithId extends formDataType{
+export interface formDataTypeWithId extends formDataType{
     id:string
   }
 interface initialStateType{

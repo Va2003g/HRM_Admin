@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./App.css";
 import {
   Login,
@@ -7,6 +7,8 @@ import {
   LeaveTracker,
   Attendance,
   ProtectedRoute,
+  Profile,
+  Payroll,
 } from "./components";
 import { Dashboard, AddEmployee, Layout } from "./pages";
 import { Routes, Route } from "react-router-dom";
@@ -24,6 +26,8 @@ function App() {
             <Route path="leaves" element={<LeaveTracker />} />
             <Route path="leaves" element={<LeaveTracker />} />
             <Route path="attendance" element={<Attendance />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="payroll" element={<Payroll />} />
             <Route path="*" element={<div>Coming Soon</div>} />
           </Route>
         </Route>

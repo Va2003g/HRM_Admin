@@ -60,7 +60,7 @@ export function Service() {
         <FaRegCalendarCheck className={`${mainIcon} text-yellow-300`} />
         <h3 className={text}>Attendance</h3>
       </div>
-      <div className={divStyles}>
+      <div className={divStyles} onClick={()=>navigate(Route.PAY_ROLL)}>
         <CiCircleInfo className={infoIcon} />
         <IoReceiptOutline className={`${mainIcon} text-red-400`} />
         <h3 className={text}>Pay Roll</h3>

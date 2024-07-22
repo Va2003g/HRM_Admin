@@ -1,4 +1,3 @@
-
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { auth, db } from "../backend";
@@ -15,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../Redux/store";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { Route } from "../routes";
+import { ProgressBar } from "react-loader-spinner";
 
 export const ProtectedRoute = () => {
   const dispatch = useDispatch();
@@ -46,10 +46,9 @@ export const ProtectedRoute = () => {
           };
           dispatch(update(updatedUserData));
         }
+      } else {
+        dispatch(update(null));
       }
-        else {
-          dispatch(update(null));
-        }
       setAuthChecked(true);
     });
 
@@ -66,7 +65,22 @@ export const ProtectedRoute = () => {
       });
   }
   if (!authChecked) {
-    return <div className="h-full flex justify-center items-center text-4xl">Loading...</div>;
+    // return <div className="h-full flex justify-center items-center text-4xl">Loading...</div>;
+    return (
+      <div className="h-full flex flex-col justify-center items-center">
+        <ProgressBar
+          visible={true}
+          height="180"
+          width="180"
+          // color="#4fa94d"
+          ariaLabel="progress-bar-loading"
+          wrapperStyle={{
+          }}
+          wrapperClass=""
+        />
+        <h3 className="-mt-8 text-3xl">Loading..</h3>
+      </div>
+    );
   }
   if (authChecked && User && User.role === "Employee") {
     return (
