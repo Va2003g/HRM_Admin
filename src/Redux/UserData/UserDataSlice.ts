@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {createSlice } from "@reduxjs/toolkit";
 import { formDataType } from "../../components";
 // export interface userDataType {
 //     displayName:string,
@@ -31,7 +31,7 @@ export const userSlice = createSlice({
   reducers: {
     update: (state, action) => {
       state.data = action.payload;
-      console.log('action.payloadin userdata: ', action.payload)
+      console.log("action.payloadin userdata: ", action.payload);
     },
   },
 });

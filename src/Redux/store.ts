@@ -3,12 +3,14 @@ import UserData from './UserData/UserDataSlice'
 import booleanSlice from "./booleanSlice/booleanSlice";
 import EmployeeSlice from "./EmployeeData/EmployeeSlice";
 import ProjectSlice from "./projectSlice";
+import Permission  from "./PermissionsSlice";
 export const store = configureStore({
   reducer: {
     userData: UserData,
     booleanData:booleanSlice,
     employeeData:EmployeeSlice,
-    projectData:ProjectSlice
+    projectData:ProjectSlice,
+    permission:Permission,
   },
 });
 

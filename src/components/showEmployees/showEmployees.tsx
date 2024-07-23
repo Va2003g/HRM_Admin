@@ -18,6 +18,9 @@ interface formDataTypeWithId extends formDataType {
 }
 export const ShowEmployees = () => {
   const dispatch = useDispatch();
+  const permissions = useSelector(
+    (state: RootState) => state.permission.permissionData
+  );
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "Employees"), (snapshot) => {
       const data: formDataTypeWithId[] = snapshot.docs.map(
@@ -53,22 +56,22 @@ export const ShowEmployees = () => {
   ) => {
     console.log("id: ", id);
     console.log("event: ", event.target.value);
-  
+
     try {
       const userRef = doc(db, "Employees", id);
       await updateDoc(userRef, {
         role: event.target.value,
       });
-  
+
       // // Fetch the updated document
       // const updatedDoc = await getDoc(userRef);
-  
+
       // if (updatedDoc.exists()) {
       //   const updatedUserData = {
       //     id: updatedDoc.id,
       //     ...updatedDoc.data(),
       //   };
-  
+
       //   // Dispatch the updated user data
       //   dispatch(update(updatedUserData));
       // }
@@ -114,35 +117,45 @@ export const ShowEmployees = () => {
                 <p className="text-gray-500">{data.email}</p>
                 <p className="text-gray-500">{data.dateOfJoining}</p>
                 <div className="flex justify-between">
-                  <select
-                    name=""
-                    id=""
-                    className="outline-none"
-                    onChange={(event) => handleRoleChange(data.id, event)}
-                  >
-                    <option className="text-gray-500" value={data.role}>
-                      {data.role}
-                    </option>
-                    {data.role !== "Admin" && (
-                      <option className="text-gray-500" value="Admin">
-                        Admin
+                  {permissions.some((permission) =>
+                    permission.name.includes("delete_user")
+                  ) ? (
+                    <select
+                      name=""
+                      id=""
+                      className="outline-none"
+                      onChange={(event) => handleRoleChange(data.id, event)}
+                    >
+                      <option className="text-gray-500" value={data.role}>
+                        {data.role}
                       </option>
-                    )}
-                    {data.role !== "Employee" && (
-                      <option className="text-gray-500" value="Employee">
-                        Employee
-                      </option>
-                    )}
-                    {data.role !== "Manager" && (
-                      <option className="text-gray-500" value="Manager">
-                        Manager
-                      </option>
-                    )}
-                  </select>
-                  <MdDelete
-                    className="text-red-400 text-2xl cursor-pointer hover:text-red-700"
-                    onClick={() => handleDelete(data.id)}
-                  />
+                      {data.role !== "Admin" && (
+                        <option className="text-gray-500" value="Admin">
+                          Admin
+                        </option>
+                      )}
+                      {data.role !== "Employee" && (
+                        <option className="text-gray-500" value="Employee">
+                          Employee
+                        </option>
+                      )}
+                      {data.role !== "Manager" && (
+                        <option className="text-gray-500" value="Manager">
+                          Manager
+                        </option>
+                      )}
+                    </select>
+                  ) : (
+                    <p className="text-gray-500">{data.role}</p>
+                  )}
+                  {permissions.some((permission) =>
+                    permission.name.includes("delete_user")
+                  ) && (
+                    <MdDelete
+                      className="text-red-400 text-2xl cursor-pointer hover:text-red-700"
+                      onClick={() => handleDelete(data.id)}
+                    />
+                  )}
                 </div>
                 {/* <p className="text-gray-500">{data.role}</p> */}
               </div>
