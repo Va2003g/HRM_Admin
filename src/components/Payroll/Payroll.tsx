@@ -58,7 +58,7 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
     </div>
   );
 };
-export const Payroll = () => {
+export const PayRoll = () => {
   const employees = useSelector(
     (state: RootState) => state.employeeData.employeeData
   );
@@ -324,4 +324,4 @@ export const Payroll = () => {
   );
 };
 
-export default Payroll
+export default PayRoll

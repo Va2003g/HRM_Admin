@@ -115,7 +115,7 @@ export const ShowEmployees = () => {
                   {data.firstName + " " + data.lastName}
                 </h2>
                 <p className="text-gray-500">{data.email}</p>
-                <p className="text-gray-500">{data.dateOfJoining}</p>
+                <p className="text-gray-500">DOJ:- {data.dateOfJoining}</p>
                 <div className="flex justify-between">
                   {permissions.some((permission) =>
                     permission.name.includes("delete_user")

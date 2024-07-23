@@ -8,7 +8,7 @@ import {
   Attendance,
   ProtectedRoute,
   Profile,
-  Payroll,
+  PayRoll,
 } from "./components";
 import { Dashboard, AddEmployee, Layout } from "./pages";
 import { Routes, Route } from "react-router-dom";
@@ -141,7 +141,7 @@ function App() {
             <Route path="leaves" element={<LeaveTracker />} />
             <Route path="attendance" element={<Attendance />} />
             <Route path="profile" element={<Profile />} />
-            <Route path="payroll" element={<Payroll />} />
+            <Route path="payroll" element={<PayRoll />} />
             <Route path="*" element={<div>Coming Soon</div>} />
           </Route>
         </Route>
