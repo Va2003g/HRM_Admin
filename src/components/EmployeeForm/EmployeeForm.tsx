@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import colors from "../../colors";
 import { AddUser, db } from "../../backend";
 import { addDoc, collection } from "firebase/firestore";
-
+import { useSelector } from "react-redux";
+import { RootState } from "../../Redux/store";
 
 export interface formDataType {
   firstName: string;
@@ -18,7 +19,7 @@ export interface formDataType {
   state: string;
   postalCode: string;
   photoURL: string;
-  [key:string]:string;
+  [key: string]: string;
 }
 
 export const EmployeeForm = () => {
@@ -101,7 +102,7 @@ export const EmployeeForm = () => {
       [name]: "",
     }));
   };
-
+  const userData = useSelector((state: RootState) => state.userData.data);
   return (
     // <div
     //   className="w-full m-5 p-6 rounded-lg shadow-md h-screen hide-scrollbar"
@@ -367,9 +368,13 @@ export const EmployeeForm = () => {
                     className="p-2 h-10 mt-1 col-span-10 block w-[500px] border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                   >
                     <option value="Employee">Employee</option>
-                    <option value="Admin">Admin</option>
-                    {/* <option value="SuperAdmin">SuperAdmin</option> */}
-                    <option value="Manager">Manager</option>
+
+                    {userData.role === "Admin" && (
+                      <option value="Admin">Admin</option>
+                    )}
+                    {userData.role === "Admin" && (
+                      <option value="Manager">Manager</option>
+                    )}
                   </select>
                   {errors.role && (
                     <p className="text-red-500 text-sm">{errors.role}</p>

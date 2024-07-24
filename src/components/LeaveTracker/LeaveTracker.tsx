@@ -179,7 +179,7 @@ export const LeaveTracker = () => {
         <select
           value={selectedEmployee || ""}
           onChange={(e) => setSelectedEmployee(e.target.value)}
-          className="w-1/3 border border-gray-300 rounded-md"
+          className="w-1/3 border border-gray-300 rounded-md p-3"
         >
           <option value="" disabled>
             Select an Employee

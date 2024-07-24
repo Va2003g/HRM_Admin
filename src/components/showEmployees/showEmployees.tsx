@@ -96,7 +96,7 @@ export const ShowEmployees = () => {
           {employeesData.map((data) => (
             // <div className="p-2 lg:w-1/3 md:w-1/2 w-full" key={data.id} onClick={(event)=>console.log(event.target)}>
             <div
-              className="h-full w-[360px] flex items-center border-gray-200 border p-4 rounded-lg m-2"
+              className="h-full w-[370px] flex items-center border-gray-200 border p-4 rounded-lg m-2"
               onClick={(event) => console.log(event.target)}
               key={data.id}
             >
