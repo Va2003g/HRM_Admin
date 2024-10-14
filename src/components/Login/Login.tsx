@@ -68,7 +68,10 @@ export function Login() {
       </div>
       <div className="loginBlock flex flex-col relative top-[331px] gap-3">
         <div className="imageLogo">
-          <img src={logo} alt="" />
+          {/* <img 
+            // src={logo} 
+            alt="Logo" 
+          /> */}
         </div>
         <div className="message text-[#232324] text-[25.2px] font-[600] leading-[37.8px] tracking-[0.10499993711709976px] text-left">
           Log In to Your Account

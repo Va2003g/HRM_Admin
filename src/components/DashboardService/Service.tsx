@@ -4,8 +4,8 @@ import { FcBusinessman, FcAlarmClock, FcLeave } from "react-icons/fc";
 import { FaFolder } from "react-icons/fa";
 import { FaRegCalendarCheck } from "react-icons/fa6";
 import { IoReceiptOutline } from "react-icons/io5";
-import { BiReceipt } from "react-icons/bi";
-import { GrAnnounce } from "react-icons/gr";
+// import { BiReceipt } from "react-icons/bi";
+// import { GrAnnounce } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
 import { Route } from "../../routes";
 import { useDispatch } from "react-redux";
@@ -65,7 +65,7 @@ export function Service() {
         <IoReceiptOutline className={`${mainIcon} text-red-400`} />
         <h3 className={text}>Pay Roll</h3>
       </div>
-      <div className={divStyles}>
+      {/* <div className={divStyles}>
         <CiCircleInfo className={infoIcon} />
         <BiReceipt className={`${mainIcon} text-red-600`} />
         <h3 className={text}>Download PaySlip</h3>
@@ -74,7 +74,7 @@ export function Service() {
         <CiCircleInfo className={infoIcon} />
         <GrAnnounce className={`${mainIcon} text-green-500`} />
         <h3 className={text}>Annoucements</h3>
-      </div>
+      </div> */}
     </div>
   );
 }
